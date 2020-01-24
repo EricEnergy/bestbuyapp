@@ -3,6 +3,15 @@ const productsController = require("../../controllers/productsController");
 
 // Matches with "/api/products"
 router
+  .route("/pop")
+  .get(productsController.showPopular)
+
+router
+  .route("/cart")
+  .get(productsController.findCart)
+
+
+router
   .route("/")
   .get(productsController.findAll)
   .post(productsController.create);

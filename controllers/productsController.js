@@ -1,9 +1,25 @@
 const db = require("../models");
 const axios = require("axios");
 // Defining methods for the productsController
+
+// 
+
+
 module.exports = {
+  showPopular: function(req, res) {
+    axios
+      .get(
+        `https://api.bestbuy.com/beta/products/mostViewed(categoryId=abcat0107000)?apiKey=${process.env.BEST_BUY_API_KEY}`
+      )
+      .then(results => {
+        // console.log("RESULTS: ", results.data.results);
+        res.json([...results.data.results]);
+      })
+      .catch(err => console.log(err));
+  },
+
   findAll: function(req, res) {
-    if (req.query.q === "") {
+    if (!req.query.q) {
       req.query.q = "iphone";
     }
     axios
@@ -60,6 +76,13 @@ module.exports = {
   remove: function(req, res) {
     db.Product.findById({ _id: req.params.id })
       .then(dbModel => dbModel.remove())
+      .then(dbModel => res.json(dbModel))
+      .catch(err => res.status(422).json(err));
+  },
+  findCart: function(req, res) {
+    db.Product
+      .find(req.query)
+      .sort({ date: -1 })
       .then(dbModel => res.json(dbModel))
       .catch(err => res.status(422).json(err));
   }
