@@ -6,6 +6,7 @@ import Cart from "./pages/Cart";
 import NoMatch from "./pages/NoMatch";
 import signup from "./pages/signup";
 import Nav from "./components/Nav";
+// var isAuthenticated = require("../config/middleware/isAuthenticated");
 
 function App() {
   return (
