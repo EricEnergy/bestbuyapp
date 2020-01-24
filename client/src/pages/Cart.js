@@ -6,7 +6,12 @@ import API from "../utils/API";
 
 function myCart() {
 
-  const [cart, setCart] = useState([])
+  const [cart, setCart] = useState([]);
+
+  const totalStyle = {
+    fontSize:"20px",
+    textAlign : "right" 
+};
 
   useEffect(() => {
     loadCart();
@@ -23,7 +28,14 @@ function myCart() {
     .then(res => loadCart())
   };
 
+  function accumulateTotal(cart) {
+    const total = cart.reduce((p, c) => (parseFloat(p) + parseFloat(c.price)), 0);
+    return formatCurrency(total);
+}
 
+function formatCurrency(number) {
+    return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(number);
+}
   console.log(cart)
 
   return (
@@ -51,10 +63,10 @@ function myCart() {
                                 </tr>
                             })
                             }
-                            {/* <tr >
-                                <td style={}>Total</td>
-                                <td key={"1"} style={} colSpan="3">{accumulateTotal(inCart)}</td>
-                            </tr> */}
+                            <tr >
+                                <td style={totalStyle}>Total</td>
+                                <td key={"1"} style={totalStyle} colSpan="3">{accumulateTotal(cart)}</td>
+                            </tr>
                         </tbody>
                     </table>
         </Row>
